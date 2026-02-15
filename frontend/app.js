@@ -17,16 +17,18 @@ form.addEventListener("submit", async (e) => {
         claim: document.getElementById("claim").value
     };
 
+    const API_BASE = "https://psy-lnf4.onrender.com"
+
     try {
-        const res = await fetch("http://192.168.0.191:5000/generate_question", {
+					const res = await fetch(`${API_BASE}/generate_question`, {
 //        const res = await fetch("http://127.0.0.1:5000/generate_question", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload)
-        });
-				if (!res.ok) {
-						throw new Error("Network response was not ok: " + res.status);
-				}
+					});
+					if (!res.ok) {
+							throw new Error("Network response was not ok: " + res.status);
+					}
         const data = await res.json();
         output.classList.add("visible");
         console.log("Received from backend:", data);

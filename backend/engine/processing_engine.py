@@ -15,7 +15,7 @@ class ProcessingEngine:
 
         claim_text = user_input.get("claim", "").strip()
         if not claim_text:
-            return {"observation": "[No claim provided]", "question": ""}
+            return "[No claim provided]"
 
         system_prompt = self.llm.config.get("system_prompt_template",
             "You are an AI assistant analyzing the claim and asking one follow-up question if needed.")
@@ -23,13 +23,14 @@ class ProcessingEngine:
         # Call LLM with the claim text
         result = self.llm.call(user_input=claim_text, system_prompt=system_prompt)
 
-        # Ensure dict output
-        if isinstance(result, dict):
-            return result
-        elif hasattr(result, "text"):
-            return {"observation": result.text.strip(), "question": ""}
+        obs = result.get("observation", "").strip()
+        ques = result.get("question", "").strip()
+
+        # Combine observation and question into one clean string
+        if ques:
+            return f"{obs} {ques}"
         else:
-            return {"observation": str(result), "question": ""}
+            return obs
 
     # --------------------
     # Input handling

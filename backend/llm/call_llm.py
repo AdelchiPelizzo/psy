@@ -1,7 +1,9 @@
 import os
 import yaml
 
-# Load config
+# -----------------------------
+# Load config from YAML
+# -----------------------------
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "config"))
 CONFIG_PATH = os.path.join(BASE_DIR, "config.yaml")
 
@@ -11,30 +13,50 @@ with open(CONFIG_PATH) as f:
 
 class CallLLM:
     def __init__(self):
-        self.mock = os.getenv("MOCK_LLM", "false").lower() == "false"
+        # MOCK_LLM environment variable (default: False)
+        self.mock = os.getenv("MOCK_LLM", "false").strip().lower() == "true"
         self.config = config
 
         print("🚦 MOCK_LLM =", self.mock)
 
         if not self.mock:
+            # Read API key from environment
+            api_key = os.getenv("OPENAI_API_KEY")
+            if not api_key:
+                raise ValueError(
+                    "OPENAI_API_KEY environment variable is missing! "
+                    "Set it locally or in Render's Environment settings."
+                )
             from openai import OpenAI
-            self.client = OpenAI(api_key=self.config["openai_api_key"])
+            self.client = OpenAI(api_key=api_key)
         else:
             self.client = None
 
     def call(self, user_input, system_prompt=None):
-        # Use system_prompt from config if not provided
+        """
+        Calls the LLM with the given user input and optional system prompt.
+        Returns a dict: {"observation": str, "question": str}
+        """
+
+        # Use system_prompt from YAML if not provided
         if system_prompt is None:
             system_prompt = self.config.get(
                 "system_prompt_template",
                 "You are a psychoanalytic AI assistant. Analyze the claim and provide one concise observation and, if needed, a follow-up question."
             )
 
+        # -----------------------------
         # MOCK MODE
+        # -----------------------------
         if self.mock:
-            return {"observation": "Your claim seems plausible.", "question": "Can you provide evidence for this claim?"}
+            return {
+                "observation": "Your claim seems plausible.",
+                "question": "Can you provide evidence for this claim?"
+            }
 
+        # -----------------------------
         # REAL MODE
+        # -----------------------------
         try:
             response = self.client.chat.completions.create(
                 model=self.config["model"],
@@ -42,13 +64,15 @@ class CallLLM:
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": user_input}
                 ],
-                max_tokens=self.config["max_output_tokens"],
-                temperature=self.config["temperature"],
+                max_tokens=self.config.get("max_output_tokens", 100),
+                temperature=self.config.get("temperature", 0.8),
             )
 
             text = response.choices[0].message.content.strip()
 
-            # Split Observation / Question if AI returned both
+            # -----------------------------
+            # Split Observation / Question
+            # -----------------------------
             obs, ques = "", ""
             if "Question:" in text:
                 parts = text.split("Question:", 1)

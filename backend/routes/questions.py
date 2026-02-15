@@ -15,20 +15,15 @@ engine = ProcessingEngine(CallLLM())
 @generate_question_route.route("/generate_question", methods=["POST"])
 def generate_question():
     data = request.json
-    print("Received JSON:", data)  # ✅ Debug payload
+    print("Received JSON:", data)
 
     try:
-        result = engine.generate_question(user_input=data)
-        print("Generated result:", result)  # ✅ Debug output
-
-        # Make sure result is a dict with keys
-        obs = result.get("observation", "")
-        ques = result.get("question", "")
-        return jsonify({"observation": obs, "question": ques})
-
+        text = engine.generate_question(user_input=data)
+        print("Generated result:", text)
+        return jsonify({"result": text})
     except Exception as e:
-        print("Error in generate_question:", e)  # ✅ Full stack trace will show in console
-        return jsonify({"observation": f"[Error: {str(e)}]", "question": ""}), 500
+        return jsonify({"error": str(e)}), 500
+
 
 
 
