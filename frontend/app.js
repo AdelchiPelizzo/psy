@@ -20,7 +20,7 @@ form.addEventListener("submit", async (e) => {
     const API_BASE = "https://psy-lnf4.onrender.com"
 
     try {
-					const res = await fetch(`${API_BASE}/generate_question`, {
+					const res = await fetch("/generate_question", {
 //        const res = await fetch("http://127.0.0.1:5000/generate_question", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
