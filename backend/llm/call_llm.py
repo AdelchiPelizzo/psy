@@ -25,8 +25,9 @@ class CallLLM:
 
         if not self.mock:
             # Read API key from environment
-            api_key = os.getenv("OPENAI_API_KEY")
-            print("OPENAI_API_KEY:", os.getenv("OPENAI_API_KEY"))
+            api_key = "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"
+            # api_key = os.getenv("OPENAI_API_KEY")
+            # print("OPENAI_API_KEY:", os.getenv("OPENAI_API_KEY"))
 
             if not api_key:
                 raise ValueError(
