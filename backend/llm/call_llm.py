@@ -21,7 +21,7 @@ class CallLLM:
 
 
 
-        print("🚦 MOCK_LLM =", self.mock)
+        print("🚦 MOCK_LLM >> =", self.mock)
 
         if not self.mock:
             # Read API key from environment
