@@ -14,7 +14,7 @@ with open(CONFIG_PATH) as f:
 class CallLLM:
     def __init__(self):
         # MOCK_LLM environment variable (default: False)
-        self.mock = os.getenv("MOCK_LLM", "false").strip().lower() == "true"
+        self.mock = os.getenv("MOCK_LLM", "false").strip().lower() == "false"
         self.config = config
 
         print("🚦 MOCK_LLM =", self.mock)
