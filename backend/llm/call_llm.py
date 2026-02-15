@@ -1,5 +1,6 @@
 import os
 import yaml
+from openai import OpenAI
 
 # -----------------------------
 # Load config from YAML
@@ -27,14 +28,13 @@ class CallLLM:
             # Read API key from environment
             api_key = os.getenv("OPENAI_API_KEY")
             print("OPENAI_API_KEY:", os.getenv("OPENAI_API_KEY"))
+            self.client = OpenAI(api_key=api_key)
 
             if not api_key:
                 raise ValueError(
                     "OPENAI_API_KEY environment variable is missing! "
                     "Set it locally or in Render's Environment settings."
                 )
-            from openai import OpenAI
-            self.client = OpenAI(api_key=api_key)
         else:
             self.client = None
 
