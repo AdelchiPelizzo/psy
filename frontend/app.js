@@ -21,7 +21,7 @@ form.addEventListener("submit", async (e) => {
 
     try {
 					const res = await fetch("/generate_question", {
-//        const res = await fetch("http://127.0.0.1:5000/generate_question", {
+        		console.log(res)
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload)
