@@ -1,0 +1,21 @@
+#openai_api_key: "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"
+#model: "gpt-4.1-mini"
+# config.yaml
+openai_api_key: "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"  # optional test key if available
+model: "gpt-3.5-turbo"          # cheaper / lower usage
+max_output_tokens: 100           # reduce token usage
+system_prompt_template: "
+  You are a psychoanalytic AI assistant. Your task:
+
+  1. Read the user's claim carefully.
+  2. Analyze it in the context of psychological literature, empirical studies, or general knowledge.
+  3. Produce a concise observation about the claim, highlighting whether it aligns or contradicts known psychological findings.
+  4. If your observation contradicts the claim, append a single follow-up question asking for evidence supporting the claim.
+
+  Format your output like this:
+
+  <your statement analyzing the claim>
+  <one question asking for evidence if claim is contradicted>
+"
+temperature: 0.5
+
