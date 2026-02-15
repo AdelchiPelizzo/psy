@@ -33,7 +33,7 @@ form.addEventListener("submit", async (e) => {
         output.classList.add("visible");
         console.log("Received from backend:", data);
                 // Display observation + question
-        output.textContent = data.observation + (data.question ? " " + data.question : "");
+        output.textContent = data);
     } catch (err) {
         output.textContent = "Error: " + err.message;
         output.classList.add("visible");
