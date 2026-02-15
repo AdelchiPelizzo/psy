@@ -26,6 +26,8 @@ class CallLLM:
         if not self.mock:
             # Read API key from environment
             api_key = os.getenv("OPENAI_API_KEY")
+            print("OPENAI_API_KEY:", os.getenv("OPENAI_API_KEY"))
+
             if not api_key:
                 raise ValueError(
                     "OPENAI_API_KEY environment variable is missing! "
