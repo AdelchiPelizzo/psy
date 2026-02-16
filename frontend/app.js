@@ -63,9 +63,8 @@ form.addEventListener("submit", async (e) => {
     button.disabled = true;
     button.textContent = "Generating...";
 
-    const payload = {
-        claim: document.getElementById("claim").value
-    };
+    const claim = document.getElementById("claim").value
+    const lang = localStorage.getItem("lang") || "en";
 
     const API_BASE = "https://psy-lnf4.onrender.com"
 
