@@ -127,38 +127,23 @@
   </style>
 </head>
 <body>
-
   <div class="container">
-    <h1>Psyche it</h1>
-    <p class="subtitle">
-      Analyze This
-    </p>
-
-    <form id="ai-form">
-<!--      <div>-->
-<!--        <label for="topic">Topic</label>-->
-<!--        <input type="text" id="topic" placeholder="e.g. Climate change" required>-->
-<!--      </div>-->
-
-      <div>
-<!--        <label for="claim">Affermazione</label>-->
-        <textarea id="claim" placeholder="Enter the claim you want questioned…" required></textarea>
+      <div style="display:flex; justify-content:flex-end; margin-bottom:1rem;">
+          <select id="lang-select">
+            <option value="en">English</option>
+            <option value="it">Italiano</option>
+          </select>
       </div>
-
-<!--      <div>-->
-<!--        <label for="emotion">Tone</label>-->
-<!--        <select id="emotion">-->
-<!--          <option value="neutral">Neutral</option>-->
-<!--          <option value="fear">Fear</option>-->
-<!--        </select>-->
-<!--      </div>-->
-      <button type="submit" id="submit-btn">Generate</button>
-
+      <h1 data-i18n="title">Psyche it</h1>
+      <p class="subtitle" data-i18n="subtitle">Analyze This</p>
+    <form id="ai-form">
+      <div>
+        <textarea id="claim"  data-i18n-placeholder="claimPlaceholder" placeholder="Enter the claim you want questioned…" required></textarea>
+      </div>
+      <button type="submit" id="submit-btn" data-i18n="generate">Generate</button>
     </form>
-
     <div id="output"></div>
   </div>
-
   <script src="app.js"></script>
 </body>
 </html>

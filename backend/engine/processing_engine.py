@@ -8,7 +8,7 @@ class ProcessingEngine:
         """
         self.llm = llm
 
-    def generate_question(self, user_input, strategy="evidence", depth=2, mode="neutral"):
+    def generate_question(self, user_input, strategy="evidence", depth=2, mode="neutral", lang="en"):
         # Wrap string input into dict if needed
         if isinstance(user_input, str):
             user_input = {"claim": user_input}
@@ -17,16 +17,24 @@ class ProcessingEngine:
         if not claim_text:
             return "[No claim provided]"
 
-        system_prompt = self.llm.config.get("system_prompt_template",
-            "You are an AI assistant analyzing the claim and asking one follow-up question if needed.")
+        # 🌍 Localized system prompt
+        if lang == "it":
+            system_prompt = (
+                "Sei un assistente psicoanalitico. Analizza l'affermazione e fornisci "
+                "una breve osservazione e, se necessario, una domanda di follow-up."
+            )
+        else:
+            system_prompt = (
+                "You are a psychoanalytic AI assistant. Analyze the claim and provide "
+                "one concise observation and, if needed, a follow-up question."
+            )
 
-        # Call LLM with the claim text
+        # Call LLM
         result = self.llm.call(user_input=claim_text, system_prompt=system_prompt)
 
         obs = result.get("observation", "").strip()
         ques = result.get("question", "").strip()
 
-        # Combine observation and question into one clean string
         if ques:
             return f"{obs} {ques}"
         else:
