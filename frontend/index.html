@@ -165,14 +165,32 @@
       transform: scale(1.1);
     }
 
+    .logo-container {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
 
+    .logo {
+      width: 80px;       /* adjust as needed */
+      height: 80px;      /* maintain square ratio */
+      object-fit: contain;
+      border-radius: 16px; /* optional rounded corners */
+    }
+
+    @media (max-width: 400px) {
+      .logo {
+        width: 60px;
+        height: 60px;
+      }
+    }
   </style>
 </head>
-
-
-
 <body>
   <div class="container">
+      <!-- Logo at top center -->
+      <div class="logo-container">
+        <img src="/icons/icon-192.png" alt="Psyche it Logo" class="logo">
+      </div>
       <div style="display:flex; justify-content:flex-end; margin-bottom:1rem;">
           <select id="lang-select">
             <option value="en">English</option>
