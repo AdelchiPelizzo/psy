@@ -17,8 +17,8 @@ system_prompt_template: "
   <your statement analyzing the claim>
   <one question asking for evidence if claim is contradicted>
 "
-temperature: 0.4,
-top_p: 0.9,
-frequency_penalty: 0.1,
+temperature: 0.4
+top_p: 0.9
+frequency_penalty: 0.1
 presence_penalty: 0.1
 
