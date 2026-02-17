@@ -7,8 +7,17 @@ class ProcessingEngine:
         llm: instance of CallLLM
         """
         self.llm = llm
+        # Track history per user_id (can be session token, user ID, or temp key)
+        self.user_histories = {}
 
-    def generate_question(self, user_input, strategy="evidence", depth=2, mode="neutral", lang="en"):
+    def generate_question(self, user_input, user_id="default_user", strategy="evidence", depth=2, mode="neutral",
+                          lang="en"):
+        # Initialize per-user history if missing
+        if user_id not in self.user_histories:
+            self.user_histories[user_id] = []
+
+        conversation_history = self.user_histories[user_id]
+
         # Wrap string input into dict if needed
         if isinstance(user_input, str):
             user_input = {"claim": user_input}
@@ -57,11 +66,24 @@ class ProcessingEngine:
             )
 
         # Call LLM
-        result = self.llm.call(user_input=claim_text, system_prompt=system_prompt)
+        result = self.llm.call(user_input=claim_text, system_prompt=system_prompt, conversation_history=conversation_history)
 
+        # Append user input to history
+        conversation_history.append({"role": "user", "content": claim_text})
+
+        # Build assistant text from structured response
         obs = result.get("observation", "").strip()
+        interp = result.get("interpretation", "").strip()
         ques = result.get("question", "").strip()
 
+        # Combine into a single string for history
+        assistant_text = f"{obs}\n{interp}\n{ques}".strip()
+        conversation_history.append({"role": "assistant", "content": assistant_text})
+
+        # Optional: keep last 12 turns for token management
+        self.user_histories[user_id] = conversation_history[-12:]
+
+        # Return a clean version to the route / frontend
         if ques:
             return f"{obs} {ques}"
         else:
