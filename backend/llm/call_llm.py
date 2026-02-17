@@ -72,6 +72,10 @@ class CallLLM:
                 ],
                 max_tokens=self.config.get("max_output_tokens", 100),
                 temperature=self.config.get("temperature", 0.8),
+                top_p=self.config.get("top_p", 0.9),
+                frequency_penalty=self.config.get("frequency_penalty", 0.2),
+                presence_penalty=self.config.get("presence_penalty", 0.0),
+
             )
 
             text = response.choices[0].message.content.strip()
