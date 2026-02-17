@@ -5,10 +5,15 @@ from backend.llm.call_llm import CallLLM
 generate_question_route = Blueprint("questions", __name__)
 engine = ProcessingEngine(CallLLM())
 
+import traceback
+
 @generate_question_route.route("/generate_question", methods=["POST"])
 def generate_question():
     data = request.json
-    user_id = data.get("user_id", "default_user")  # fallback for simple demo
+    if not data:
+        return jsonify({"error": "No JSON payload received"}), 400
+
+    user_id = data.get("user_id", "default_user")  # fallback for demo
     print("Received JSON:", data)
 
     try:
@@ -20,7 +25,11 @@ def generate_question():
         print("Generated result:", text)
         return jsonify({"result": text})
     except Exception as e:
+        # Print full traceback for debugging
+        print("ERROR in /generate_question:")
+        traceback.print_exc()
         return jsonify({"error": str(e)}), 500
+
 
 
 
