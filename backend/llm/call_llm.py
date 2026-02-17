@@ -70,7 +70,7 @@ class CallLLM:
             messages.append({"role": "user", "content": user_input})
 
             response = self.client.chat.completions.create(model=self.config["model"], messages=messages,
-                max_tokens=int(self.config.get("max_output_tokens", 100)),
+                max_tokens=int(self.config.get("max_output_tokens", 150)),
                 temperature=float(self.config.get("temperature", 0.8)), top_p=float(self.config.get("top_p", 0.9)),
                 frequency_penalty=float(self.config.get("frequency_penalty", 0.2)),
                 presence_penalty=float(self.config.get("presence_penalty", 0.0)), )
